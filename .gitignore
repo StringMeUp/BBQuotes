@@ -1,0 +1,73 @@
+### Xcode ###
+build/
+DerivedData/
+*.xcworkspace/xcuserdata/
+*.xcuserdatad
+*.xccheckout
+*.moved-aside
+*.xcscmblueprint
+*.xcuserstate
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Package.resolved
+
+# CocoaPods
+Pods/
+Podfile.lock
+*.xcworkspace
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/README.md
+
+# Tuist
+Tuist/Dependencies/
+Tuist/Cache/
+
+# Dependencies
+*.framework
+*.xcframework
+*.modulemap
+
+# User-specific files
+*.swp
+*.swo
+*.DS_Store
+
+# Xcode project workspace data
+xcuserdata/
+xcuserdata/**/*
+
+# iOS simulator data
+*.simdevicetype
+*.simruntime
+
+# Crash and logs
+*.crash
+*.xcactivitylog
+*.moved-aside
+*.hmap
+
+# SwiftGen
+swiftgen.yml
+Generated/
+
+# SwiftLint
+.swiftlintcache
+
+# Firebase / Google services (manje rizično, koristi prema potrebi)
+GoogleService-Info.plist
+
+# Misc
+*.orig
+*.rej
+*.zip
+*.tar.gz
