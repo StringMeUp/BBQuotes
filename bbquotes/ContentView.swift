@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var viewModel = ViewModel()
+    
     var body: some View {
         TabView() {
                 
             Tab("Tab 1", systemImage: "tray.and.arrow.down.fill")
             {
+                Text(viewModel.quote.quote)
+                Text(viewModel.character.name)
                 Image(systemName: "globe")
-                    
             }
                 
             Tab("Tab 2", systemImage: "globe.fill")
@@ -23,7 +26,10 @@ struct ContentView: View {
                     
             }
             
-        }.preferredColorScheme(.dark)
+        }.task {
+            await viewModel.getData(for: "Breaking Bad")
+        }
+        .preferredColorScheme(.dark)
     }
 }
 

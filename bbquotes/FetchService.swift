@@ -9,11 +9,11 @@ import Foundation
 
 struct FetchService {
     
-    enum FetchError: Error {
+    private enum FetchError: Error {
         case badResponse
     }
     
-    let baseUrl = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
+    private let baseUrl = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
     // quote https://breaking-bad-api-six.vercel.app/api/quotes/random?production=Better+Call+Saul
     // characters https://breaking-bad-api-six.vercel.app/api/characters?name=Jimmy+McGill
     // deaths https://breaking-bad-api-six.vercel.app/api/deaths
@@ -51,7 +51,7 @@ struct FetchService {
     }
     
     
-    func fetchDeatch(for character: String) async throws -> Death? {
+    func fetchDeath(for character: String) async throws -> Death? {
         // Fetch url
         let deathUrl = baseUrl.appending(path: "deaths")
         // Fetch data
