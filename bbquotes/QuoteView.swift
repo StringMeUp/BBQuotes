@@ -25,47 +25,64 @@ struct QuoteView: View {
             }.frame(width: geo.size.width, height: geo.size.height)
             
             VStack {
-                Spacer(minLength: 60)
-                Text("\"\(vm.quote.quote)\"")
-                    .minimumScaleFactor(0.5)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(Color.white)
-                    .padding()
-                    .background(.black.opacity(0.5))
-                    .clipShape(.rect(cornerRadius: 25))
-                    .padding(.horizontal)
-                
-                ZStack(alignment: .bottom) {
-                    AsyncImage(url: vm.character.images[0]) { Image in
-                        Image.resizable()
-                            .scaledToFill()
-                    } placeholder: {
+                VStack {
+                    Spacer(minLength: 60)
+                    switch vm.status {
+                    case .notStatrted:
+                        EmptyView()
+                    case .loading:
                         ProgressView()
-                    }.frame(
-                        width: geo.size.width / 1.1,
-                        height: geo.size.height / 1.8)
-                    .clipShape(.rect(cornerRadius: 25))
-                    
-                    Text(vm.character.name)
-                        .foregroundStyle(.white)
-                        .padding(10)
-                        .frame(maxWidth: .infinity)
-                        .background(.ultraThinMaterial)
-                }.frame(
-                    width: geo.size.width / 1.1,
-                    height: geo.size.height / 1.8)
-                .clipShape(.rect(cornerRadius: 25))
-                .padding()
+                    case .success:
+                        Text("\"\(vm.quote.quote)\"")
+                            .minimumScaleFactor(0.5)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(Color.white)
+                            .padding()
+                            .background(.black.opacity(0.5))
+                            .clipShape(.rect(cornerRadius: 25))
+                            .padding(.horizontal)
+                        
+                        ZStack(alignment: .bottom) {
+                            AsyncImage(url: vm.character.images[0]) { Image in
+                                Image.resizable()
+                                    .scaledToFill()
+                            } placeholder: {
+                                ProgressView()
+                            }.frame(
+                                width: geo.size.width / 1.1,
+                                height: geo.size.height / 1.8)
+                            .clipShape(.rect(cornerRadius: 25))
+                            
+                            Text(vm.character.name)
+                                .foregroundStyle(.white)
+                                .padding(10)
+                                .frame(maxWidth: .infinity)
+                                .background(.ultraThinMaterial)
+                        }.frame(
+                            width: geo.size.width / 1.1,
+                            height: geo.size.height / 1.8)
+                        .clipShape(.rect(cornerRadius: 25))
+                        .padding()
+                        
+                    case .failure(let error):
+                        Text(
+                            "An error has occured: \(error.localizedDescription)"
+                        )
+                    }
+                    Spacer()
+                }
              
                 Button {
                     Task {
                         await vm.getData(for: show)
                     }
-                }
+                } 
                 label: {
                     Text("Get Random Quote")
                         .padding()
-                        .background(self.show == "Breaking Bad" ? .bbGreen: .bcsBlue)
+                        .background(
+                            self.show == "Breaking Bad" ? .bbGreen: .bcsBlue
+                        )
                         .foregroundStyle(.white)
                         .frame(width: geo.size.width / 2, height: 54)
                         .clipShape(.rect(cornerRadius: 25))
