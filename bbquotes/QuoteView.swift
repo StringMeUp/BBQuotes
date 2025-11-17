@@ -9,8 +9,10 @@ import Foundation
 import SwiftUI
 
 struct QuoteView: View {
+    
     let vm: ViewModel = ViewModel()
     var show: String
+    @State var showCharacter: Bool = false
     
     var body: some View {
         GeometryReader { geo in
@@ -28,10 +30,13 @@ struct QuoteView: View {
                 VStack {
                     Spacer(minLength: 60)
                     switch vm.status {
+                        
                     case .notStatrted:
                         EmptyView()
+                        
                     case .loading:
                         ProgressView()
+                        
                     case .success:
                         Text("\"\(vm.quote.quote)\"")
                             .minimumScaleFactor(0.5)
@@ -52,6 +57,9 @@ struct QuoteView: View {
                                 width: geo.size.width / 1.1,
                                 height: geo.size.height / 1.8)
                             .clipShape(.rect(cornerRadius: 25))
+                            .onTapGesture {
+                                showCharacter.toggle()
+                            }
                             
                             Text(vm.character.name)
                                 .foregroundStyle(.white)
@@ -65,6 +73,7 @@ struct QuoteView: View {
                         .padding()
                         
                     case .failure(let error):
+                        
                         Text(
                             "An error has occured: \(error.localizedDescription)"
                         )
@@ -86,10 +95,17 @@ struct QuoteView: View {
                         .foregroundStyle(.white)
                         .frame(width: geo.size.width / 2, height: 54)
                         .clipShape(.rect(cornerRadius: 25))
-                        .shadow(color: .bbYellow,  radius: 2)
+                        .shadow(color: self.show == "Breaking Bad" ? .bbYellow : .black,  radius: 2)
                 }
+                
                 Spacer(minLength: 95)
-            }.frame(width: geo.size.width, height: geo.size.height)
+                
+            }
+            .frame(width: geo.size.width, height: geo.size.height)
+            .sheet(isPresented: $showCharacter) {
+                CharacterView(character: vm.character, show: show)
+            }
+            
         }.ignoresSafeArea()
     }
 }

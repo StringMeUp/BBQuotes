@@ -1,0 +1,83 @@
+//
+//  CharacterView.swift
+//  bbquotes
+//
+//  Created by Samir Ramic on 13.11.25.
+//
+
+import SwiftUI
+
+struct CharacterView: View {
+    
+    let character: BbCharacter
+    let show: String
+    
+    var body: some View {
+        GeometryReader { geo in
+            ZStack(alignment: .top) {
+                Image(show.lowercased().replacingOccurrences(of: " ", with: ""))
+                    .resizable()
+                    .scaledToFit()
+           
+                ScrollView {
+                    AsyncImage(url: character.images[0]) { Image in
+                        Image.resizable()
+                            .scaledToFill()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .clipShape(.rect(cornerRadius: 25))
+                    
+                    VStack(alignment: .leading) {
+                        Text(character.name)
+                            .font(.largeTitle)
+                        
+                        Text("Portrayed by:\(character.portrayedBy)")
+                            .font(.subheadline)
+                        Divider()
+                        
+                        Text("\(character.name) Character Info:")
+                            .font(.title2)
+                        Text("Born: \(character.birthday)")
+                        Divider()
+                        
+                        Text("Occupations:")
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .padding(.bottom, 5)
+                        
+                        ForEach(character.occupations, id: \.self) { occ in
+                            Text("• \(occ)")
+                        }
+                        Divider()
+                
+                        Text("Nicknames:")
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .padding(.bottom, 5)
+                        if character.aliases.isEmpty {
+                            Text("• None")
+                        }else{
+                            ForEach(character.aliases, id: \.self) { alias in
+                                Text("• \(alias)")
+                            }
+                        }
+                        
+                        Divider()
+   
+                    }.frame(width: geo.size.width / 1.25, alignment: .leading)
+                }
+                .scrollIndicators(.hidden)
+                .frame(width: geo.size.width / 1.2)
+                .padding(.top, 60)
+            }
+        }
+        .preferredColorScheme(ColorScheme.dark)
+        .ignoresSafeArea()
+    }
+}
+
+#Preview {
+    let vm = ViewModel()
+    CharacterView(character: vm.character, show: "Breaking Bad")
+}
