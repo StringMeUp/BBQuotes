@@ -25,7 +25,9 @@ struct QuoteView: View {
             }.frame(width: geo.size.width, height: geo.size.height)
             
             VStack {
+                Spacer(minLength: 60)
                 Text("\"\(vm.quote.quote)\"")
+                    .minimumScaleFactor(0.5)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(Color.white)
                     .padding()
@@ -34,7 +36,6 @@ struct QuoteView: View {
                     .padding(.horizontal)
                 
                 ZStack(alignment: .bottom) {
-                    
                     AsyncImage(url: vm.character.images[0]) { Image in
                         Image.resizable()
                             .scaledToFill()
@@ -54,7 +55,8 @@ struct QuoteView: View {
                     width: geo.size.width / 1.1,
                     height: geo.size.height / 1.8)
                 .clipShape(.rect(cornerRadius: 25))
-                
+                .padding()
+             
                 Button {
                     Task {
                         await vm.getData(for: show)
@@ -63,12 +65,13 @@ struct QuoteView: View {
                 label: {
                     Text("Get Random Quote")
                         .padding()
+                        .background(self.show == "Breaking Bad" ? .bbGreen: .bcsBlue)
+                        .foregroundStyle(.white)
+                        .frame(width: geo.size.width / 2, height: 54)
+                        .clipShape(.rect(cornerRadius: 25))
+                        .shadow(color: .bbYellow,  radius: 2)
                 }
-                .background(self.show == "Breaking Bad" ? .blue: .green)
-                .foregroundStyle(.white)
-                .frame(width: geo.size.width / 2, height: 54)
-                .clipShape(.rect(cornerRadius: 25))
-
+                Spacer(minLength: 95)
             }.frame(width: geo.size.width, height: geo.size.height)
         }.ignoresSafeArea()
     }
