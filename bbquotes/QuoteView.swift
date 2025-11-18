@@ -1,5 +1,5 @@
 //
-//  QuoteSuccessItem.swift
+//  QuoteView.swift
 //  bbquotes
 //
 //  Created by Samir Ramic on 18.11.25.

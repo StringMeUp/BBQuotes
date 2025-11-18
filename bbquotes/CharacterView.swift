@@ -19,8 +19,8 @@ struct CharacterView: View {
                 ZStack(alignment: .top) {
                     Image(
                         show
-                            .lowercased()
-                            .replacingOccurrences(of: " ", with: "")
+                        .lowercased()
+                        .replacingOccurrences(of: " ", with: "")
                     )
                     .resizable()
                     .scaledToFit()
@@ -88,7 +88,7 @@ struct CharacterView: View {
                                         AsyncImage(url: death.image) { Image in
                                             Image.resizable()
                                                 .scaledToFill()
-                                                .onAppear{
+                                                .onAppear {
                                                     withAnimation {
                                                         proxy.scrollTo(
                                                             bottomID, anchor: .bottom)}
