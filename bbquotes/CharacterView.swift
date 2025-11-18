@@ -11,90 +11,118 @@ struct CharacterView: View {
     
     let character: BbCharacter
     let show: String
+    let bottomID = 1
     
     var body: some View {
         GeometryReader { geo in
-            ZStack(alignment: .top) {
-                Image(show.lowercased().replacingOccurrences(of: " ", with: ""))
+            ScrollViewReader { proxy in
+                ZStack(alignment: .top) {
+                    Image(
+                        show
+                            .lowercased()
+                            .replacingOccurrences(of: " ", with: "")
+                    )
                     .resizable()
                     .scaledToFit()
-           
-                ScrollView {
-                    AsyncImage(url: character.images[0]) { Image in
-                        Image.resizable()
-                            .scaledToFill()
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .clipShape(.rect(cornerRadius: 25))
-                    
-                    VStack(alignment: .leading) {
-                        Text(character.name)
-                            .font(.largeTitle)
-                        
-                        Text("Portrayed by:\(character.portrayedBy)")
-                            .font(.subheadline)
-                        Divider()
-                        
-                        Text("\(character.name) Character Info:")
-                            .font(.title2)
-                        Text("Born: \(character.birthday)")
-                        Divider()
-                        
-                        Text("Occupations:")
-                            .font(.title3)
-                            .fontWeight(.medium)
-                            .padding(.bottom, 5)
-                        
-                        ForEach(character.occupations, id: \.self) { occ in
-                            Text("• \(occ)")
-                        }
-                        Divider()
-                
-                        Text("Nicknames:")
-                            .font(.title3)
-                            .fontWeight(.medium)
-                            .padding(.bottom, 5)
-                        if character.aliases.isEmpty {
-                            Text("• None")
-                        }else{
-                            ForEach(character.aliases, id: \.self) { alias in
-                                Text("• \(alias)")
+                    ScrollView {
+                        TabView {
+                            ForEach(character.images, id: \.self) { url in
+                                AsyncImage(url: url) { Image in
+                                    Image.resizable()
+                                        .scaledToFill()
+                                } placeholder: {
+                                    ProgressView()
+                                }
                             }
                         }
+                        .frame(height: geo.size.height / 1.8)
+                        .clipShape(.rect(cornerRadius: 25))
+                        .tabViewStyle(PageTabViewStyle())
                         
-                        Divider()
-                        
-                        DisclosureGroup("Status (spoiler alert)") {
-                            VStack(alignment: .leading, spacing: 24) {
-                                Text("\(character.status)")
-                                    .font(.title3)
-                                
-                                if let death = character.death {
-                                    AsyncImage(url: death.image) { Image in
-                                        Image.resizable()
-                                            .scaledToFill()
-                                    } placeholder: {
-                                        ProgressView()
-                                    }
-                                    .clipShape(.rect(cornerRadius: 25))
-                                    
-                                    Text("How: \(death.details)")
-                                        .font(.default)
-                                    
-                                    Text("Last words: \(death.lastWords)")
-                                        .font(.default)
+                        VStack(alignment: .leading) {
+                            Text(character.name)
+                                .font(.largeTitle)
+                            
+                            Text("Portrayed by:\(character.portrayedBy)")
+                                .font(.subheadline)
+                            Divider()
+                            
+                            Text("\(character.name) Character Info:")
+                                .font(.title2)
+                            Text("Born: \(character.birthday)")
+                            Divider()
+                            
+                            Text("Occupations:")
+                                .font(.title3)
+                                .fontWeight(.medium)
+                                .padding(.bottom, 5)
+                            
+                            ForEach(character.occupations, id: \.self) { occ in
+                                Text("• \(occ)")
+                            }
+                            Divider()
+                            
+                            Text("Nicknames:")
+                                .font(.title3)
+                                .fontWeight(.medium)
+                                .padding(.bottom, 5)
+                            if character.aliases.isEmpty {
+                                Text("• None")
+                            }else{
+                                ForEach(
+                                    character.aliases,
+                                    id: \.self
+                                ) { alias in
+                                    Text("• \(alias)")
                                 }
-                            }.frame(maxWidth: .infinity, alignment: .leading)
-                        }.tint(.primary)
+                            }
+                            
+                            Divider()
+                            
+                            DisclosureGroup("Status (spoiler alert)") {
+                                VStack(alignment: .leading, spacing: 24) {
+                                    Text("\(character.status)")
+                                        .font(.title3)
+                                    
+                                    if let death = character.death {
+                                        AsyncImage(url: death.image) { Image in
+                                            Image.resizable()
+                                                .scaledToFill()
+                                                .onAppear{
+                                                    withAnimation {
+                                                        proxy.scrollTo(
+                                                            bottomID, anchor: .bottom)}
+                                                }
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
+                                        .clipShape(.rect(cornerRadius: 25))
+                                        
+                                        Text("How: \(death.details)")
+                                            .font(.default)
+                                        
+                                        Text("Last words: \(death.lastWords)")
+                                            .font(.default)
+                                           
+                                    }
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                            }
+                            .tint(.primary)
+                        }
+                        .frame(
+                            width: geo.size.width / 1.25,
+                            alignment: .leading
+                        )
+                        .padding(.bottom, 50)
+                        .id(bottomID)
+            
                     }
-                    .frame(width: geo.size.width / 1.25, alignment: .leading)
-                    .padding(.bottom, 50)
-                    
+                    .scrollIndicators(.hidden)
+                    .frame(width: geo.size.width / 1.2)
+                    .padding(.top, 60)
                 }
-                .scrollIndicators(.hidden)
-                .frame(width: geo.size.width / 1.2)
-                .padding(.top, 60)
             }
         }
         .preferredColorScheme(ColorScheme.dark)
