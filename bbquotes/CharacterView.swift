@@ -64,8 +64,33 @@ struct CharacterView: View {
                         }
                         
                         Divider()
-   
-                    }.frame(width: geo.size.width / 1.25, alignment: .leading)
+                        
+                        DisclosureGroup("Status (spoiler alert)") {
+                            VStack(alignment: .leading, spacing: 24) {
+                                Text("\(character.status)")
+                                    .font(.title3)
+                                
+                                if let death = character.death {
+                                    AsyncImage(url: death.image) { Image in
+                                        Image.resizable()
+                                            .scaledToFill()
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    .clipShape(.rect(cornerRadius: 25))
+                                    
+                                    Text("How: \(death.details)")
+                                        .font(.default)
+                                    
+                                    Text("Last words: \(death.lastWords)")
+                                        .font(.default)
+                                }
+                            }.frame(maxWidth: .infinity, alignment: .leading)
+                        }.tint(.primary)
+                    }
+                    .frame(width: geo.size.width / 1.25, alignment: .leading)
+                    .padding(.bottom, 50)
+                    
                 }
                 .scrollIndicators(.hidden)
                 .frame(width: geo.size.width / 1.2)
