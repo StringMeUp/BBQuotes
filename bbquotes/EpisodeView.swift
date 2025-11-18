@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct EpisodeSuccessItem: View {
+struct EpisodeView: View {
     
     var vm: ViewModel = ViewModel()
 
@@ -66,5 +66,5 @@ struct EpisodeSuccessItem: View {
 
 #Preview {
     let vm = ViewModel()
-    EpisodeSuccessItem(vm: vm)
+    EpisodeView(vm: vm)
 }

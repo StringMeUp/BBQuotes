@@ -13,15 +13,15 @@ struct MainView: View {
         TabView() {
                 
             Tab("Breaking Bad", systemImage: "cooktop") {
-                QuoteView(show: "Breaking Bad")
+                TabItemView(show: "Breaking Bad")
             }
                 
             Tab("Better Call Saul", systemImage: "hammer") {
-                QuoteView(show: "Better Call Saul")
+                TabItemView(show: "Better Call Saul")
             }
             
             Tab("El Camino", systemImage: "car") {
-                QuoteView(show: "El Camino")
+                TabItemView(show: "El Camino")
             }
             
         }.preferredColorScheme(.dark)
