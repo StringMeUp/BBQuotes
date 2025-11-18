@@ -17,6 +17,7 @@ struct FetchService {
     // quote https://breaking-bad-api-six.vercel.app/api/quotes/random?production=Better+Call+Saul
     // characters https://breaking-bad-api-six.vercel.app/api/characters?name=Jimmy+McGill
     // deaths https://breaking-bad-api-six.vercel.app/api/deaths
+    // episodes https://breaking-bad-api-six.vercel.app/api/episodes/random
   
     func fetchQuotes(from show: String) async throws -> Quote {
         // Fetch url
@@ -72,5 +73,18 @@ struct FetchService {
         }
         
         return nil
+    }
+    
+    func fetchRandomEpisode() async throws -> Episode {
+        let episodeUrl = baseUrl.appending(path: "episodes").appending(path: "random")
+        let (data, response) = try await URLSession.shared.data(from: episodeUrl)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200
+        else { throw FetchError.badResponse }
+        
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let episode = try decoder.decode(Episode.self, from: data)
+        return episode
     }
 }

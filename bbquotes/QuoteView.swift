@@ -30,76 +30,84 @@ struct QuoteView: View {
                 VStack {
                     Spacer(minLength: 60)
                     switch vm.status {
-                        
                     case .notStatrted:
                         EmptyView()
-                        
                     case .loading:
                         ProgressView()
-                        
                     case .success:
-                        Text("\"\(vm.quote.quote)\"")
-                            .minimumScaleFactor(0.5)
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(Color.white)
-                            .padding()
-                            .background(.black.opacity(0.5))
-                            .clipShape(.rect(cornerRadius: 25))
-                            .padding(.horizontal)
-                        
-                        ZStack(alignment: .bottom) {
-                            AsyncImage(url: vm.character.images[0]) { Image in
-                                Image.resizable()
-                                    .scaledToFill()
-                            } placeholder: {
-                                ProgressView()
-                            }.frame(
-                                width: geo.size.width / 1.1,
-                                height: geo.size.height / 1.8)
-                            .clipShape(.rect(cornerRadius: 25))
-                            .onTapGesture {
-                                showCharacter.toggle()
-                            }
-                            
-                            Text(vm.character.name)
-                                .foregroundStyle(.white)
-                                .padding(10)
-                                .frame(maxWidth: .infinity)
-                                .background(.ultraThinMaterial)
-                        }.frame(
-                            width: geo.size.width / 1.1,
-                            height: geo.size.height / 1.8)
-                        .clipShape(.rect(cornerRadius: 25))
-                        .padding()
-                        
+                        if vm.isEpisode {
+                            EpisodeSuccessItem(vm: vm)
+                        } else {
+                            QuoteSuccessItem(
+                                vm: vm,
+                                showCharacter: $showCharacter
+                            )
+                        }
                     case .failure(let error):
-                        
                         Text(
                             "An error has occured: \(error.localizedDescription)"
                         )
                     }
                     Spacer()
                 }
-             
-                Button {
-                    Task {
-                        await vm.getData(for: show)
+                
+                HStack {
+               
+                    let backgroundColor: Color = switch show {
+                    case "Breaking Bad":
+                            .bbGreen
+                    case "Better Call Saul":
+                            .bcsBlue
+                    default:
+                            .camino
                     }
-                } 
-                label: {
-                    Text("Get Random Quote")
-                        .padding()
-                        .background(
-                            self.show == "Breaking Bad" ? .bbGreen: .bcsBlue
-                        )
-                        .foregroundStyle(.white)
-                        .frame(width: geo.size.width / 2, height: 54)
-                        .clipShape(.rect(cornerRadius: 25))
-                        .shadow(color: self.show == "Breaking Bad" ? .bbYellow : .black,  radius: 2)
+                    
+                    let shadowColor: Color = switch show {
+                    case "Breaking Bad":
+                            .bbYellow
+                    default:
+                            .black
+                    }
+                    
+                    Button {
+                        Task {
+                            await vm.getData(for: show, isEpisode: false)
+                        }
+                    }
+                    label: {
+                        Text("Get Random\nQuote")
+                            .padding(24)
+                            .background(backgroundColor)
+                            .foregroundStyle(.white)
+                            .clipShape(.rect(cornerRadius: 25))
+                            .padding()
+                            .shadow(
+                                color: shadowColor,
+                                radius: 2
+                            )
+                    }
+                    
+                    Button {
+                        Task {
+                            await vm.getData(for: show, isEpisode: true)
+                        }
+                    }
+                    label: {
+                        Text("Get Random\nEpisode")
+                            .padding(24)
+                            .background(backgroundColor)
+                            .foregroundStyle(.white)
+                            .clipShape(.rect(cornerRadius: 25))
+                            .padding()
+                            .shadow(
+                                color: shadowColor,
+                                radius: 2
+                            )
+                    }
                 }
-                
+                .frame(width: geo.size.width)
+             
                 Spacer(minLength: 95)
-                
             }
             .frame(width: geo.size.width, height: geo.size.height)
             .sheet(isPresented: $showCharacter) {
