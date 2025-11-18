@@ -27,8 +27,8 @@ struct QuoteView: View {
                     VStack(alignment: .leading) {
                         AsyncImage(url: vm.character.images[0]) { image in
                             image.resizable()
-                                .scaledToFit()
-                                .frame(width: geo.size.width / 1.1)
+                                .scaledToFill()
+                                .frame(width: geo.size.width / 1.1, height: geo.size.height)
            
                         } placeholder: {
                             ProgressView()
