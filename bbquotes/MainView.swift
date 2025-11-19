@@ -12,16 +12,16 @@ struct MainView: View {
     var body: some View {
         TabView() {
                 
-            Tab("Breaking Bad", systemImage: "cooktop") {
-                TabItemView(show: "Breaking Bad")
+            Tab(Constants.bbName, systemImage: "cooktop") {
+                TabItemView(show: Constants.bbName)
             }
                 
-            Tab("Better Call Saul", systemImage: "hammer") {
-                TabItemView(show: "Better Call Saul")
+            Tab(Constants.bcsName, systemImage: "hammer") {
+                TabItemView(show: Constants.bcsName)
             }
             
-            Tab("El Camino", systemImage: "car") {
-                TabItemView(show: "El Camino")
+            Tab(Constants.ecName, systemImage: "car") {
+                TabItemView(show: Constants.ecName)
             }
             
         }.preferredColorScheme(.dark)

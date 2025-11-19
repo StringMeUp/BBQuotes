@@ -61,12 +61,12 @@ struct TabItemView: View {
                     label: {
                         Text("Get Random\nQuote")
                             .padding(24)
-                            .background(Color(show.removeCaseAndSpaces()))
+                            .background(Color(show.removeSpaces()))
                             .foregroundStyle(.white)
                             .clipShape(.rect(cornerRadius: 25))
                             .padding()
                             .shadow(
-                                color: Color("\(show.removeCaseAndSpaces())shadowcolor"),
+                                color: Color("\(show.removeSpaces())Shadowcolor"),
                                 radius: 2
                             )
                     }
@@ -79,12 +79,12 @@ struct TabItemView: View {
                     label: {
                         Text("Get Random\nEpisode")
                             .padding(24)
-                            .background(Color(show.removeCaseAndSpaces()))
+                            .background(Color(show.removeSpaces()))
                             .foregroundStyle(.white)
                             .clipShape(.rect(cornerRadius: 25))
                             .padding()
                             .shadow(
-                                color: Color("\(show.removeCaseAndSpaces())shadowcolor"),
+                                color: Color("\(show.removeSpaces())Shadowcolor"),
                                 radius: 2
                             )
                     }
