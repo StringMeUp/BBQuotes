@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Constants {
+enum ShowConstants {
     static let bbName = "Breaking Bad"
     static let bcsName = "Better Call Saul"
     static let ecName = "El Camino"
