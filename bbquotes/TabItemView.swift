@@ -17,14 +17,15 @@ struct TabItemView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                Image(show.lowercased().replacingOccurrences(of: " ", with: ""))
+                Image(show.removeCaseAndSpaces())
                     .resizable()
                     .scaledToFill()
                     .frame(
                         width: geo.size.width * 2.7,
                         height: geo.size.height * 1.2
                     )
-            }.frame(width: geo.size.width, height: geo.size.height)
+            }
+            .frame(width: geo.size.width, height: geo.size.height)
             
             VStack {
                 VStack {
@@ -52,23 +53,6 @@ struct TabItemView: View {
                 }
                 
                 HStack {
-               
-                    let backgroundColor: Color = switch show {
-                    case "Breaking Bad":
-                            .bbGreen
-                    case "Better Call Saul":
-                            .bcsBlue
-                    default:
-                            .camino
-                    }
-                    
-                    let shadowColor: Color = switch show {
-                    case "Breaking Bad":
-                            .bbYellow
-                    default:
-                            .black
-                    }
-                    
                     Button {
                         Task {
                             await vm.getData(for: show, isEpisode: false)
@@ -77,12 +61,12 @@ struct TabItemView: View {
                     label: {
                         Text("Get Random\nQuote")
                             .padding(24)
-                            .background(backgroundColor)
+                            .background(Color(show.removeCaseAndSpaces()))
                             .foregroundStyle(.white)
                             .clipShape(.rect(cornerRadius: 25))
                             .padding()
                             .shadow(
-                                color: shadowColor,
+                                color: Color("\(show.removeCaseAndSpaces())shadowcolor"),
                                 radius: 2
                             )
                     }
@@ -95,12 +79,12 @@ struct TabItemView: View {
                     label: {
                         Text("Get Random\nEpisode")
                             .padding(24)
-                            .background(backgroundColor)
+                            .background(Color(show.removeCaseAndSpaces()))
                             .foregroundStyle(.white)
                             .clipShape(.rect(cornerRadius: 25))
                             .padding()
                             .shadow(
-                                color: shadowColor,
+                                color: Color("\(show.removeCaseAndSpaces())shadowcolor"),
                                 radius: 2
                             )
                     }

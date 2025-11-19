@@ -21,9 +21,9 @@ struct QuoteView: View {
                 .background(.black.opacity(0.5))
                 .clipShape(.rect(cornerRadius: 25))
                 .padding(.horizontal)
+            
             GeometryReader { geo in
                 ZStack(alignment:.bottom) {
-                   
                     VStack(alignment: .leading) {
                         AsyncImage(url: vm.character.images[0]) { image in
                             image.resizable()
