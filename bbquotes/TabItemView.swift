@@ -43,10 +43,22 @@ struct TabItemView: View {
                         )
                     case .successEpisode:
                         EpisodeView(vm: vm)
+                    case .successCharacter:
+                        CharacterView(character: vm.character, show: show, isDetail: false)
+                            .background(.thinMaterial)
+                            .clipShape(.rect(cornerRadius: 25))
+                            .padding(.horizontal, 25)
+                            .padding(.bottom)
+                            .onAppear {
+                                tabSelection = vm.findCorrectTab()
+                            }
+                      
                     case .failure(let error):
                         Text(
                             "An error has occured: \(error.localizedDescription)"
                         )
+                        .font(.largeTitle)
+                        .foregroundStyle(.white)
                     }
                     Spacer()
                 }
@@ -64,7 +76,7 @@ struct TabItemView: View {
                     )
                     
                     ButtonView(
-                        action: { await vm.getQuoteData(for: show) },
+                        action: { await vm.getRandomCharacter() },
                         buttonLabel: ButtonConstants.characterButton,
                         show: show
                     )

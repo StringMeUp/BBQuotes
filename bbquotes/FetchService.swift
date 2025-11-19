@@ -16,6 +16,7 @@ struct FetchService {
     private let baseUrl = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
     // quote https://breaking-bad-api-six.vercel.app/api/quotes/random?production=Better+Call+Saul
     // characters https://breaking-bad-api-six.vercel.app/api/characters?name=Jimmy+McGill
+    // random characters https://breaking-bad-api-six.vercel.app/api/characters/random
     // deaths https://breaking-bad-api-six.vercel.app/api/deaths
     // episodes https://breaking-bad-api-six.vercel.app/api/episodes/random
   
@@ -86,5 +87,18 @@ struct FetchService {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let episode = try decoder.decode(Episode.self, from: data)
         return episode
+    }
+    
+    func fetchRandomCharacter() async throws -> BbCharacter {
+        let characterUrl = baseUrl.appending(path: "characters").appending(path: "random")
+        let (data, response) = try await URLSession.shared.data(from: characterUrl)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200
+        else { throw FetchError.badResponse }
+        
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let character = try decoder.decode(BbCharacter.self, from: data)
+        return character
     }
 }

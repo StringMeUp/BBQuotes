@@ -16,6 +16,7 @@ class ViewModel {
         case loading
         case successQuote
         case successEpisode
+        case successCharacter
         case failure(error: Error)
     }
     
@@ -73,5 +74,20 @@ class ViewModel {
         } catch {
             status = .failure(error: error)
         }
+    }
+    
+    func getRandomCharacter() async {
+        self.status = .loading
+        do {
+            character = try await fetcher.fetchRandomCharacter()
+            status = .successCharacter
+        } catch {
+            status = .failure(error: error)
+        }
+    }
+    
+    func findCorrectTab() -> Int {
+        let production = character.productions.randomElement() ?? Show.breakingBad.rawValue
+        return Show(rawValue: production)?.tabIndex ?? 1
     }
 }

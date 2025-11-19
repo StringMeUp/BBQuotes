@@ -99,6 +99,8 @@ struct EpisodeView: View {
             .background(.thinMaterial)
             .clipShape(.rect(cornerRadius: 25))
             .padding(.horizontal, 25)
+            
+            Spacer()
         }
     }
 }
