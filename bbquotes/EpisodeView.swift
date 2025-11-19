@@ -16,7 +16,6 @@ struct EpisodeView: View {
         ScrollViewReader { proxy in
             ScrollView() {
                 Spacer()
-                    .id(1)
                 Text(vm.episode.title)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.largeTitle)
@@ -69,45 +68,26 @@ struct EpisodeView: View {
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                    
                     }
                     .tint(.primary)
                     .onChange(of: isExpanded) { oldValue, newValue in
                         if newValue {
-                            print("Triggered on change")
-                            extraPadding = 200
-                            
                             if vm.episode.characters.last != nil {
-                               
-                                print("Triggered proxy")
                                 withAnimation {
-                                    proxy.scrollTo("bottomAnchor", anchor: .bottom)
+                                    proxy.scrollTo(vm.episode.characters.last!, anchor: .bottom)
                                 }
-                            
-                                extraPadding = 0
-                            }
-                            
-                            // ukloni padding nakon animacije
-                          
-                        } else {
-                            withAnimation {
-                                proxy.scrollTo(1, anchor: .bottom)
-                                extraPadding = 200
                             }
                         }
                     }
+                    
+                    Spacer(minLength: 24).border(.red, width: 1)
                 }
-                
-                Color.clear.frame(height: 1).id("bottomAnchor")
-                    .padding(.bottom, extraPadding)
-           
             }
             .preferredColorScheme(.dark)
             .padding(.horizontal)
             .padding(.vertical)
             .background(.thinMaterial)
             .clipShape(.rect(cornerRadius: 25))
-            .padding(.bottom, 60)
             .padding(.horizontal, 25)
         }
     }
