@@ -8,21 +8,26 @@
 import SwiftUI
 
 struct MainView: View {
-    
+    @State private var tabSelection = 1
     var body: some View {
-        TabView() {
-                
-            Tab(Constants.bbName, systemImage: "cooktop") {
-                TabItemView(show: Constants.bbName)
-            }
-                
-            Tab(Constants.bcsName, systemImage: "hammer") {
-                TabItemView(show: Constants.bcsName)
-            }
+        TabView(selection: $tabSelection) {
+            TabItemView(show: ShowConstants.bbName, tabSelection: $tabSelection)
+                .tabItem {
+                    Text(ShowConstants.bbName)
+                    Image(systemName: "cooktop")
+                }.tag(1)
             
-            Tab(Constants.ecName, systemImage: "car") {
-                TabItemView(show: Constants.ecName)
-            }
+            TabItemView(show: ShowConstants.bcsName, tabSelection: $tabSelection)
+                .tabItem {
+                    Text(ShowConstants.bbName)
+                    Image(systemName: "hammer")
+                }.tag(2)
+            
+            TabItemView(show: ShowConstants.ecName, tabSelection: $tabSelection)
+                .tabItem {
+                    Text(ShowConstants.bbName)
+                    Image(systemName: "car")
+                }.tag(3)
             
         }.preferredColorScheme(.dark)
     }

@@ -1,5 +1,5 @@
 //
-//  Constants.swift
+//  ShowConstants.swift
 //  bbquotes
 //
 //  Created by Samir Ramic on 19.11.25.

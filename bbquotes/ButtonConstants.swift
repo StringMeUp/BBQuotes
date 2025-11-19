@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum ShowConstants {
-    static let bbName = "Breaking Bad"
-    static let bcsName = "Better Call Saul"
-    static let ecName = "El Camino"
+enum ButtonConstants: String {
+     case quotesButton = "Get Random Quote"
+     case episodeButton = "Get Random Episode"
+     case characterButton = "Get Random Character"
 }

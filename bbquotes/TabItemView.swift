@@ -13,6 +13,7 @@ struct TabItemView: View {
     let vm: ViewModel = ViewModel()
     var show: String
     @State var showCharacter: Bool = false
+    @Binding var tabSelection: Int
     
     var body: some View {
         GeometryReader { geo in
@@ -36,10 +37,10 @@ struct TabItemView: View {
                     case .loading:
                         ProgressView()
                     case .successQuote:
-                            QuoteView(
-                                vm: vm,
-                                showCharacter: $showCharacter
-                            )
+                        QuoteView(
+                            vm: vm,
+                            showCharacter: $showCharacter
+                        )
                     case .successEpisode:
                         EpisodeView(vm: vm)
                     case .failure(let error):
@@ -50,45 +51,28 @@ struct TabItemView: View {
                     Spacer()
                 }
                 
-                HStack {
-                    Button {
-                        Task {
-                            await vm.getQuoteData(for: show)
-                        }
-                    }
-                    label: {
-                        Text("Get Random\nQuote")
-                            .padding(24)
-                            .background(Color(show.removeSpaces()))
-                            .foregroundStyle(.white)
-                            .clipShape(.rect(cornerRadius: 25))
-                            .padding()
-                            .shadow(
-                                color: Color("\(show.removeSpaces())Shadowcolor"),
-                                radius: 2
-                            )
-                    }
+                HStack(alignment: .center, spacing: 18) {
+                    ButtonView(
+                    action: { await vm.getQuoteData(for: show) },
+                    buttonLabel: ButtonConstants.quotesButton,
+                    show: show)
                     
-                    Button {
-                        Task {
-                            await vm.getRandomEpisode()
-                        }
-                    }
-                    label: {
-                        Text("Get Random\nEpisode")
-                            .padding(24)
-                            .background(Color(show.removeSpaces()))
-                            .foregroundStyle(.white)
-                            .clipShape(.rect(cornerRadius: 25))
-                            .padding()
-                            .shadow(
-                                color: Color("\(show.removeSpaces())Shadowcolor"),
-                                radius: 2
-                            )
-                    }
+                    ButtonView(
+                        action: { await vm.getRandomEpisode()},
+                        buttonLabel: ButtonConstants.episodeButton,
+                        show: show
+                    )
+                    
+                    ButtonView(
+                        action: { await vm.getQuoteData(for: show) },
+                        buttonLabel: ButtonConstants.characterButton,
+                        show: show
+                    )
+                    
                 }
                 .frame(width: geo.size.width)
-             
+                .padding(.horizontal, 4)
+            
                 Spacer(minLength: 95)
             }
             .frame(width: geo.size.width, height: geo.size.height)
@@ -106,5 +90,6 @@ struct TabItemView: View {
 }
 
 #Preview {
-    TabItemView(show: "Breaking Bad")
+    @Previewable @State var tabSelection: Int = 1
+    TabItemView(show: "Breaking Bad", tabSelection: $tabSelection)
 }
