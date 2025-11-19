@@ -94,6 +94,11 @@ struct TabItemView: View {
                 Spacer(minLength: 95)
             }
             .frame(width: geo.size.width, height: geo.size.height)
+            .onAppear(perform: {
+                Task {
+                    await vm.getData(for: show, isEpisode: false)
+                }
+            })
             .sheet(isPresented: $showCharacter) {
                 CharacterView(character: vm.character, show: show)
             }

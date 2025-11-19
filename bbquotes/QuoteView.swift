@@ -25,16 +25,18 @@ struct QuoteView: View {
             GeometryReader { geo in
                 ZStack(alignment:.bottom) {
                     VStack(alignment: .leading) {
-                        AsyncImage(url: vm.character.images[0]) { image in
-                            image.resizable()
-                                .scaledToFill()
-                                .frame(width: geo.size.width / 1.1, height: geo.size.height)
-           
-                        } placeholder: {
-                            ProgressView()
+                        if let imageUrl = vm.character.images.randomElement() {
+                            AsyncImage(url: imageUrl) { image in
+                                image.resizable()
+                                    .scaledToFill()
+                                    .frame(width: geo.size.width / 1.1, height: geo.size.height)
+                                
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .clipShape(.rect(cornerRadius: 25))
+                            .onTapGesture { showCharacter.toggle() }
                         }
-                        .clipShape(.rect(cornerRadius: 25))
-                        .onTapGesture { showCharacter.toggle() }
                     }
                         
                     Text(vm.character.name)
