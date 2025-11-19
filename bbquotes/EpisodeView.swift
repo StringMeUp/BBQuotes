@@ -23,6 +23,12 @@ struct EpisodeView: View {
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(Color.white)
                 
+                Text(vm.episode.seasonEpisode)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.default)
+                    .foregroundStyle(.white)
+                    .padding(.top, 10)
+                
                 AsyncImage(url: vm.episode.image) { Image in
                     Image.resizable()
                         .scaledToFill()
@@ -31,11 +37,13 @@ struct EpisodeView: View {
                 }
                 .clipShape(.rect(cornerRadius: 25))
                 
-                Text("Air date: \(vm.episode.synopsis)")
+                Text("Synopsis: \(vm.episode.synopsis)")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.default)
                     .foregroundStyle(.white)
                     .padding(.top, 10)
+                
+                Spacer(minLength: 10)
                 
                 VStack(alignment: .leading) {
                     Text("Air date: \(vm.episode.airDate)")

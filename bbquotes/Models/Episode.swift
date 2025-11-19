@@ -15,4 +15,8 @@ struct Episode: Codable {
     let image: URL
     let synopsis, writtenBy, directedBy, airDate: String
     let characters: [String]
+    
+    var seasonEpisode: String {
+        "Season \(episode / 100): Episode \(episode % 100)"
+    }
 }
