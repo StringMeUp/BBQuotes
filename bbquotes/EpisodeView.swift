@@ -68,19 +68,21 @@ struct EpisodeView: View {
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                         }
+                        .padding(10)
                     }
                     .tint(.primary)
                     .onChange(of: isExpanded) { oldValue, newValue in
                         if newValue {
                             if vm.episode.characters.last != nil {
                                 withAnimation {
-                                    proxy.scrollTo(vm.episode.characters.last!, anchor: .bottom)
-                                }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                                        withAnimation {
+                                            proxy.scrollTo(vm.episode.characters.last!, anchor: .bottom)
+                                        }
+                                    }                                }
                             }
                         }
                     }
-                    
-                    Spacer(minLength: 24).border(.red, width: 1)
                 }
             }
             .preferredColorScheme(.dark)
