@@ -35,15 +35,13 @@ struct TabItemView: View {
                         EmptyView()
                     case .loading:
                         ProgressView()
-                    case .success:
-                        if vm.isEpisode {
-                            EpisodeView(vm: vm)
-                        } else {
+                    case .successQuote:
                             QuoteView(
                                 vm: vm,
                                 showCharacter: $showCharacter
                             )
-                        }
+                    case .successEpisode:
+                        EpisodeView(vm: vm)
                     case .failure(let error):
                         Text(
                             "An error has occured: \(error.localizedDescription)"
@@ -55,7 +53,7 @@ struct TabItemView: View {
                 HStack {
                     Button {
                         Task {
-                            await vm.getData(for: show, isEpisode: false)
+                            await vm.getQuoteData(for: show)
                         }
                     }
                     label: {
@@ -73,7 +71,7 @@ struct TabItemView: View {
                     
                     Button {
                         Task {
-                            await vm.getData(for: show, isEpisode: true)
+                            await vm.getRandomEpisode()
                         }
                     }
                     label: {
@@ -96,7 +94,7 @@ struct TabItemView: View {
             .frame(width: geo.size.width, height: geo.size.height)
             .onAppear(perform: {
                 Task {
-                    await vm.getData(for: show, isEpisode: false)
+                    await vm.getQuoteData(for: show)
                 }
             })
             .sheet(isPresented: $showCharacter) {

@@ -14,7 +14,8 @@ class ViewModel {
     enum FetchStatus {
         case notStatrted
         case loading
-        case success
+        case successQuote
+        case successEpisode
         case failure(error: Error)
     }
     
@@ -24,7 +25,6 @@ class ViewModel {
     var quote: Quote
     var character: BbCharacter
     var episode: Episode
-    var isEpisode: Bool = false
     
     init() {
         let decoder = JSONDecoder()
@@ -43,24 +43,33 @@ class ViewModel {
         )
         character = try! decoder.decode(BbCharacter.self, from: characterData)
         
-        let episodeData = try! Data(contentsOf: Bundle.main.url(forResource: "sampleepisode", withExtension: "json")!)
+        let episodeData = try! Data(
+            contentsOf: Bundle.main
+                .url(forResource: "sampleepisode", withExtension: "json")!
+        )
         episode = try! decoder.decode(Episode.self, from: episodeData)
         
     }
     
-    func getData(for show: String, isEpisode: Bool) async {
+    func getQuoteData(for show: String) async {
         self.status = .loading
-        self.isEpisode = isEpisode
         
         do {
-            if isEpisode {
-                episode = try await fetcher.fetchRandomEpisode()
-            } else {
-                quote = try await fetcher.fetchQuotes(from: show)
-                character = try await fetcher.fetchCharacter(quote.character)
-                character.death = try await fetcher.fetchDeath(for: character.name)
-            }
-            status = .success
+            quote = try await fetcher.fetchQuotes(from: show)
+            character = try await fetcher.fetchCharacter(quote.character)
+            character.death = try await fetcher.fetchDeath(for: character.name)
+            status = .successQuote
+        } catch {
+            status = .failure(error: error)
+        }
+    }
+    
+    func getRandomEpisode() async {
+        self.status = .loading
+        
+        do {
+            episode = try await fetcher.fetchRandomEpisode()
+            status = .successEpisode
         } catch {
             status = .failure(error: error)
         }
